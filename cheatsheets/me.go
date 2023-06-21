@@ -60,5 +60,4 @@ func main() {
 
 		fmt.Println("Slogan from slogans:", firstWord)
 	}
-
 }
