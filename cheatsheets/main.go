@@ -29,7 +29,7 @@ func main() {
 
 	fmt.Println("What's your name?")
 	var firstName string
-	fmt.Scan(&firstName) // use Pointer to object variable
+	// fmt.Scan(&firstName) // use Pointer to object variable
 	fmt.Println("Niceto meet you", firstName, "!")
 
 	fmt.Println("For operations pls use SAME TYPE, like", thisIsConstantB-10)
@@ -85,11 +85,11 @@ func main() {
 	}
 
 	// PACKEGES GLOBAL VAR
-	helpMenu := "Help menu"
-	helpVersion := 10
-	helpApp(helpMenu, helpVersion)
+	// helpMenu := "Help menu"
+	// helpVersion := 10
+	// helpApp(helpMenu, helpVersion)
 
-	fmt.Printf("IT's a global thing - %v\n", GlobalVariable)
+	// fmt.Printf("IT's a global thing - %v\n", GlobalVariable)
 
 	// MAPS
 	var listOfMaps = make([]map[string]string, 0)
@@ -102,7 +102,7 @@ func main() {
 	listOfMaps = append(listOfMaps, notEmptyMap)
 	// CONCURENCY SYMPLE
 
-	waitSeconds(10)
+	// waitSeconds(10)
 	workStruct()
 
 }
@@ -120,7 +120,10 @@ func workStruct() {
 		age       int
 	}
 
-	var listOfStructs = make([]UserData, 0)
+	var listOfStructs = make([]UserData, 1)
+
+	fmt.Println("lengs", len(listOfStructs))
+	fmt.Println("caps", cap(listOfStructs))
 
 	var userData_1 = UserData{
 		firstName: "Bob",
@@ -137,8 +140,46 @@ func workStruct() {
 	listOfStructs = append(listOfStructs, userData_1)
 	listOfStructs = append(listOfStructs, UserData_2)
 
+	fmt.Println("lengs", len(listOfStructs))
+	fmt.Println("caps", cap(listOfStructs))
+
 	for index, listStruct := range listOfStructs {
 		fmt.Printf("%v name is: %v", index, listStruct.firstName)
+		fmt.Printf("Type is: %T", listStruct)
 	}
 
 }
+
+// package main
+
+// import "fmt"
+
+// type LampDiode struct{}
+
+// func (l *LampDiode) ScrewOn() string {
+//   return "Lamp 1"
+// }
+
+// type LampIncandescent struct{}
+
+// func (l *LampIncandescent) ScrewOn() string {
+//   return "Lamp 2"
+// }
+
+// type Lamp interface {
+//   ScrewOn() string
+// }
+
+// func Chandelier(l Lamp) {
+//   fmt.Println(l.ScrewOn())
+// }
+
+// func main() {
+//   var l1 Lamp
+//   l1 = new(LampDiode)
+//   Chandelier(l1)
+
+//   var l2 Lamp
+//   l2 = new(LampIncandescent)
+//   Chandelier(l2)
+// }
