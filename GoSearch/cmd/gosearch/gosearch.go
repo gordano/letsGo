@@ -4,51 +4,42 @@ import (
 	"flag"
 	"fmt"
 	"gosearch/pkg/crawler/spider"
+	"log"
 )
-
-type scanData struct {
-	sites []string
-	urls  []string
-	depth int
-}
 
 func main() {
 	var nFlag = flag.String("s", "", "Print links from websites")
 	flag.Parse()
-
 	if len(*nFlag) < 1 {
-		fmt.Println("Please retry with [-s document]")
+		flag.PrintDefaults()
 		return
 	}
 
-	var webData = &scanData{
-		sites: []string{"https://go.dev", "https://golang.org"},
-		depth: 2,
+	urls := [2]string{"https://go.dev", "https://golang.org"}
+	depth := 2
+
+	links, err := scanLinks(urls, depth)
+	if err != nil {
+		log.Printf("Error: %v", err)
 	}
 
-	webData.scan()
-	webData.showLinks()
+	for _, l := range links {
+		fmt.Println(l)
+	}
 }
 
-func (s *scanData) scan() (*scanData, error) {
+func scanLinks(urls [2]string, depth int) ([]string, error) {
 	spider := spider.New()
+	result := []string{}
 
-	for _, site := range s.sites {
-		data, err := spider.Scan(site, s.depth)
+	for _, u := range urls {
+		doc, err := spider.Scan(u, depth)
 		if err != nil {
-			return s, err
+			return nil, err
 		}
-
-		for _, e := range data {
-			s.urls = append(s.urls, e.URL)
+		for _, d := range doc {
+			result = append(result, d.URL)
 		}
 	}
-	return s, nil
-}
-
-func (s *scanData) showLinks() *scanData {
-	for _, url := range s.urls {
-		fmt.Println(url)
-	}
-	return s
+	return result, nil
 }
