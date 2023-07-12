@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
-	"gosearch/pkg/crawler/spider"
+	"gosearch/2/GoSearch/pkg/crawler/spider"
 	"log"
 )
 
