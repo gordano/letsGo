@@ -3,31 +3,29 @@ package main
 import (
 	"flag"
 	"fmt"
+	"gosearch/pkg/crawler"
 	"gosearch/pkg/crawler/spider"
 	"log"
+	"strings"
 )
 
 func main() {
-	var nFlag = flag.String("s", "", "Print links from websites")
+	var query = flag.String("s", "", "Print links from websites")
 	flag.Parse()
-	if len(*nFlag) < 1 {
+	if len(*query) < 1 {
 		flag.PrintDefaults()
 		return
 	}
 
-	urls := [2]string{"hhtttps://go.dev", "https://golang.org"}
+	urls := [2]string{"https://go.dev", "https://golang.org"}
 	depth := 2
-
-	links := scanLinks(urls, depth)
-
-	for _, l := range links {
-		fmt.Println(l)
-	}
+	docs := scanLinks(urls, depth)
+	search(docs, *query)
 }
 
-func scanLinks(urls [2]string, depth int) []string {
+func scanLinks(urls [2]string, depth int) []crawler.Document {
 	spider := spider.New()
-	result := []string{}
+	result := []crawler.Document{}
 
 	for _, u := range urls {
 		doc, err := spider.Scan(u, depth)
@@ -35,9 +33,16 @@ func scanLinks(urls [2]string, depth int) []string {
 			log.Print(err)
 			continue
 		}
-		for _, d := range doc {
-			result = append(result, d.URL)
-		}
+		result = append(result, doc...)
 	}
 	return result
+}
+
+func search(docs []crawler.Document, query string) {
+	fmt.Println("Wait... your search word is: ", query)
+	for _, d := range docs {
+		if strings.Contains(d.URL, query) {
+			fmt.Printf("Title: %v - Link: %v\n", d.Title, d.URL)
+		}
+	}
 }
