@@ -51,6 +51,7 @@ func (s *searcher) run() {
 		docs, errs := spider.Scan(url, s.depth)
 		if errs != nil {
 			log.Println(errs)
+			continue
 		}
 
 		for _, doc := range docs {
